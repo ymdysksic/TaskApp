@@ -10,6 +10,8 @@ import android.content.Intent
 import androidx.appcompat.app.AlertDialog
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.text.Editable
+import android.util.Log
 
 const val EXTRA_TASK = "jp.techacademy.taro.kirameki.taskapp.TASK"
 
@@ -38,6 +40,21 @@ class MainActivity : AppCompatActivity() {
 
         // ListViewの設定
         mTaskAdapter = TaskAdapter(this)
+
+        // 検索ボタンをタップした時の処理
+        search_button.setOnClickListener(){
+            // Realmデータベースから、入力した文字列に一致するカテゴリのデータを取得
+            val searchRealmResults = mRealm.where(Task::class.java).equalTo("category", search_text.text.toString()).findAll()
+
+            // 上記の結果を、TaskListとしてセットする
+            mTaskAdapter.mTaskList = mRealm.copyFromRealm(searchRealmResults)
+
+            // TaskのListView用のアダプタに渡す
+            listView1.adapter = mTaskAdapter
+
+            // 表示を更新するために、アダプターにデータが変更されたことを知らせる
+            mTaskAdapter.notifyDataSetChanged()
+        }
 
         // ListViewをタップしたときの処理
         listView1.setOnItemClickListener { parent, _, position, _ ->
