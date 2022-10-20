@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
-    apply plugin: 'kotlin-kapt'     // これを追加
-    apply plugin: 'realm-android'   // これを追加
+    id 'kotlin-kapt'     // これを追加
+    id 'realm-android'   // これを追加
 }
 
 android {
